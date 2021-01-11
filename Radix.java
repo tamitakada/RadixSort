@@ -3,8 +3,9 @@ import java.util.*;
 
 public class Radix {
   public static int nth(int n, int col) {
-    String val = ("" + n).substring(col, col + 1);
-    return Integer.valueOf(val);
+    String val = ("" + Math.abs(n));
+    int index = val.length() - 1 - col;
+    return Integer.valueOf(val.substring(index, index + 1));
   }
 
   public static int length(int n) {
