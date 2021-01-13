@@ -20,27 +20,26 @@ public class Radix {
 
   public static void radixSortSimple(SortableLinkedList data) {
     SortableLinkedList[] buckets = new SortableLinkedList[10];
+
     for (int i = 0; i < 10; i++) {
       buckets[i] = new SortableLinkedList();
     }
 
     int maxLen = 1;
-    for (int i = data.size() - 1; i >= 0; i--) {
-      if (length(data.get(i)) > maxLen) maxLen = length(data.get(i));
-      buckets[nth(data.get(i), 0)].add(data.get(i));
-      data.remove(i);
+
+    while (data.size() > 0) {
+      int item = data.remove(0);
+      if (length(item) > maxLen) maxLen = length(item);
+      buckets[nth(item, 0)].add(item);
     }
 
     merge(data, buckets);
 
     for (int i = 1; i <= maxLen; i++) {
-      for (int j = 0; j < data.size(); j++) {
-        if (length(data.get(j)) <= i) buckets[0].add(data.get(j));
-        else {
-          buckets[nth(data.get(j), i)].add(data.get(j));
-        }
-        data.remove(j);
-        j--;
+      while (data.size() > 0) {
+        int item = data.remove(0);
+        if (length(item) <= i) buckets[0].add(item);
+        else buckets[nth(item, i)].add(item);
       }
 
       merge(data, buckets);
