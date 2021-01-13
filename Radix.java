@@ -57,29 +57,28 @@ public class Radix {
     }
 
     int maxLen = 1;
-    for (int i = data.size() - 1; i >= 0; i--) {
-      if (length(data.get(i)) > maxLen) maxLen = length(data.get(i));
-      if (data.get(i) < 0) negativeBuckets[9 - nth(data.get(i), 0)].add(data.get(i));
-      else buckets[nth(data.get(i), 0)].add(data.get(i));
-      data.remove(i);
+
+    while (data.size() > 0) {
+      int item = data.remove(0);
+      if (length(item) > maxLen) maxLen = length(item);
+      if (item < 0) negativeBuckets[9 - nth(item, 0)].add(item);
+      else buckets[nth(item, 0)].add(item);
     }
 
     merge(data, negativeBuckets);
     merge(data, buckets);
 
     for (int i = 1; i <= maxLen; i++) {
-      for (int j = 0; j < data.size(); j++) {
-        if (length(data.get(j)) <= i) {
-          if (data.get(j) < 0) negativeBuckets[9].add(data.get(j));
-          else buckets[0].add(data.get(j));
+      while (data.size() > 0) {
+        int item = data.remove(0);
+        if (length(item) <= i) {
+          if (item < 0) negativeBuckets[9].add(item);
+          else buckets[0].add(item);
         } else {
-          if (data.get(j) < 0) negativeBuckets[9 - nth(data.get(j), i)].add(data.get(j));
-          else buckets[nth(data.get(j), i)].add(data.get(j));
+          if (item < 0) negativeBuckets[9 - nth(item, i)].add(item);
+          else buckets[nth(item, i)].add(item);
         }
-        data.remove(j);
-        j--;
       }
-
       merge(data, negativeBuckets);
       merge(data, buckets);
     }
